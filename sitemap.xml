@@ -7,10 +7,16 @@
     <loc>https://montesmariana.github.io/semcloud/LICENSE.html</loc>
   </url>
   <url>
+    <loc>https://montesmariana.github.io/semcloud/articles/HDBSCAN.html</loc>
+  </url>
+  <url>
     <loc>https://montesmariana.github.io/semcloud/articles/index.html</loc>
   </url>
   <url>
     <loc>https://montesmariana.github.io/semcloud/articles/processClouds.html</loc>
+  </url>
+  <url>
+    <loc>https://montesmariana.github.io/semcloud/articles/weightConcordance.html</loc>
   </url>
   <url>
     <loc>https://montesmariana.github.io/semcloud/authors.html</loc>

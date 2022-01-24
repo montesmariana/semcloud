@@ -48,7 +48,9 @@
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="articles/processClouds.html">processClouds</a>
+    <a class="dropdown-item" href="articles/processClouds.html">From SemasioFlow to NephoVis</a>
+    <a class="dropdown-item" href="articles/weightConcordance.html">Weight contexts</a>
+    <a class="dropdown-item" href="articles/HDBSCAN.html">HDBSCAN in token-level clouds</a>
   </div>
 </li>
       </ul>
@@ -88,33 +90,18 @@
 <div class="section level2">
 <h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
 </h2>
-<p>You can find a notebook with the workflow this package is meant to support as a vignette of the package. To access it, you’ll have to specify that vignettes must be built, or you can find it <a href="https://montesmariana.github.io/semcloud/articles/processClouds.html">in the Articles section</a>:</p>
+<p>Instructions on how to go through the workflow can be found in a handful of vignettes, available in the Articles section or by calling <code><a href="https://rdrr.io/r/utils/vignette.html" class="external-link">vignette()</a></code>:</p>
+<ul>
+<li>
+<code><a href="articles/processClouds.html">vignette('processClouds')</a></code> explains the steps from the output of semasioFlow to the input of NephoVis;</li>
+<li>
+<code><a href="articles/weightConcordance.html">vignette('weightConcordance')</a></code> shows how to create tailored contexts for Nephovis;</li>
+<li>
+<code><a href="articles/HDBSCAN.html">vignette('HDBSCAN')</a></code> shows how to implement HDBSCAN clustering on the models and use the output to classify clouds (clusters).</li>
+</ul>
+<p>To build vignettes when installing from GitHub run:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"montesmariana/semcloud"</span>, build_vignettes <span class="op">=</span> <span class="cn">T</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/vignette.html" class="external-link">vignette</a></span><span class="op">(</span><span class="st">'processClouds'</span>, <span class="st">'semcloud'</span><span class="op">)</span></code></pre></div>
-<div class="section level3">
-<h3 id="cloud-classification">Cloud classification<a class="anchor" aria-label="anchor" href="#cloud-classification"></a>
-</h3>
-<p>Based on the output from the code shown in the vignette, it is possible to classify the clouds as shown in <a href="https://cloudspotting.montesmariana.me" class="external-link">Chapter 5 of Montes (2021)</a> by running the following code:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">models</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="st">'/output/of/summarizeHDBSCAN'</span><span class="op">)</span>
-<span class="va">ttmx_dir</span> <span class="op">&lt;-</span> <span class="st">'path/to/distance/matrices'</span>
-
-<span class="co"># For one model</span>
-<span class="va">lname</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">models</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>
-<span class="va">mname</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">models</span><span class="op">[[</span><span class="va">lname</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">medoidCoords</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>
-
-<span class="fu"><a href="reference/classifyModel.html">classifyModel</a></span><span class="op">(</span><span class="va">models</span><span class="op">[[</span><span class="va">lname</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">medoidCoords</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>,
-             <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">models</span><span class="op">[[</span><span class="va">lname</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">medoidCoords</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>,
-             <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">ttmx_dir</span>, <span class="va">lname</span><span class="op">)</span><span class="op">)</span>
-             
-<span class="co"># For all models, all lemmas</span>
-<span class="va">classification</span> <span class="op">&lt;-</span> <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/imap.html" class="external-link">imap_dfr</a></span><span class="op">(</span><span class="va">models</span>, <span class="kw">function</span><span class="op">(</span><span class="va">ldata</span>, <span class="va">lname</span><span class="op">)</span><span class="op">{</span>
-    <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/imap.html" class="external-link">imap_dfr</a></span><span class="op">(</span><span class="va">models</span><span class="op">[[</span><span class="va">lname</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">medoidCoords</span>, <span class="va">classifyModel</span>,
-    ttmx_dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">ttmx_dir</span>, <span class="va">lname</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span> 
-    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>lemma <span class="op">=</span> <span class="va">lname</span><span class="op">)</span>
-<span class="op">}</span><span class="op">)</span></code></pre></div>
-</div>
+<code class="sourceCode R"><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"montesmariana/semcloud"</span>, build_vignettes <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="license">License<a class="anchor" aria-label="anchor" href="#license"></a>
