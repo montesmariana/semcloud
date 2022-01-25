@@ -79,7 +79,7 @@
       <img src="../logo.png" class="logo" alt=""><h1>HDBSCAN in token-level clouds</h1>
                         <h4 data-toc-skip class="author">Mariana Montesr</h4>
             
-            <h4 data-toc-skip class="date">2022-01-24</h4>
+            <h4 data-toc-skip class="date">2022-01-25</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/montesmariana/semcloud/blob/HEAD/vignettes/HDBSCAN.Rmd" class="external-link"><code>vignettes/HDBSCAN.Rmd</code></a></small>
       <div class="d-none name"><code>HDBSCAN.Rmd</code></div>
@@ -87,12 +87,12 @@
 
     
     
-<p>The workflow this package is designed for uses HDBSCAN <span class="citation">(Campello, Moulavi, and Sander 2013)</span> to cluster the tokens. The main purpose is to systematically and objectively identify groups of similar tokens, while allowing some of them to be excluded as noise. <span class="citation">Montes (2021)</span> argues that the groups identified by HDBSCAN tend to coincide with the groups that a human researcher might visually identify in a t-SNE rendering of the same model with perplexity 30. However, the nature of these clusters is very diverse, leading to a technical classification that can be linked both to visual shapes and linguistic properties (see <a href="https://cloudspotting.marianamontes.me/shapes.html" class="external-link">Chapter 5</a> of <span class="citation">Montes (2021)</span>). The functions in this vignette take output from the <code>semasioflow</code> Python package and from the <a href="processClouds.html">cloud processing vignette</a>, prepares the data to be used in the <a href="https://github.com/montesmariana/Level3" class="external-link">Level3 ShinyApp</a> and shows how to classify clouds according to said typology.</p>
+<p>The workflow this package is designed for uses HDBSCAN <span class="citation">(Campello, Moulavi, and Sander 2013)</span> to cluster the tokens. The main purpose is to systematically and objectively identify groups of similar tokens, while allowing some of them to be excluded as noise. <span class="citation">Montes (2021)</span> argues that the groups identified by HDBSCAN tend to coincide with the groups that a human researcher might visually identify in a t-SNE rendering of the same model with perplexity 30. However, the nature of these clusters is very diverse, leading to a technical classification that can be linked both to visual shapes and linguistic properties (see <a href="https://cloudspotting.marianamontes.me/shapes.html" class="external-link">Chapter 5</a> of <span class="citation">Montes (2021)</span>). The functions in this vignette take output from the <a href="https://montesmariana.github.io/semasioFlow/tutorials/createClouds.html" class="external-link"><code>semasioFlow</code> Python workflow</a> and from the <a href="processClouds.html">cloud processing vignette</a>, prepares the data to be used in the <a href="https://github.com/montesmariana/Level3" class="external-link">Level3 ShinyApp</a> and shows how to classify clouds according to said typology.</p>
 <div class="section level2">
 <h2 id="register-hdbscan">Register HDBSCAN<a class="anchor" aria-label="anchor" href="#register-hdbscan"></a>
 </h2>
 <p>The first step is to decide on which lemmas HDBSCAN will be computed; often you might only be interested in the medoids. HDBSCAN information, from clustering to membership probabilities or <span class="math inline">\(\varepsilon\)</span> values, <em>could</em> in principle be included for NephoVis, but it would require a lot of adjusting and it’s still on the wishlist.</p>
-<p>The current workaround is to leave the HDBSCAN visualization to the <a href="https://github.com/montesmariana/Level3" class="external-link">Level3 ShinyApp</a>, which requires the output of this step as an RDS file and the type-level distance matrices corresponding to the different models. the file has a named list with one item per lemma, and in each lemma a <code>senses</code> dataframe with token IDs and other general information of interest and, most importantly, a <code>medoidCoords</code> named list with one item per model. Each model object includes:</p>
+<p>The current workaround is to leave the HDBSCAN visualization to the <a href="https://github.com/montesmariana/Level3" class="external-link">Level3 ShinyApp</a><a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content='&lt;p&gt;See application &lt;a href="https://marianamontes.shinyapps.io/Level3/" class="external-link"&gt;here&lt;/a&gt;.&lt;/p&gt;'><sup>1</sup></a>, which requires the output of this step as an RDS file and the type-level distance matrices corresponding to the different models. the file has a named list with one item per lemma, and in each lemma a <code>senses</code> dataframe with token IDs and other general information of interest and, most importantly, a <code>medoidCoords</code> named list with one item per model. Each model object includes:</p>
 <ul>
 <li><p><code>coords</code>: the coordinates of the tokens, next to other variables in the “variables” dataframe like, in my case, “senses”, as well as the tailored list of context words. <code><a href="../reference/summarizeHDBSCAN.html">summarizeHDBSCAN()</a></code> adds the HDBSCAN-derived values (cluster, membership and <span class="math inline">\(\varepsilon\)</span>).</p></li>
 <li><p><code>cws</code>: distribution of first-order context words across HDBSCAN clusters and their t-SNE coordinates if available. This dataframe has one row per context word per cluster and recall, precision and F-score information for the relationship between the context word and the HDBSCAN cluster.</p></li>
@@ -169,6 +169,7 @@
 </div>
 </div>
 </div>
+
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>
 </div>
